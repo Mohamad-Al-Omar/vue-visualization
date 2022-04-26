@@ -2,7 +2,7 @@
   <v-app>
     <app-bar />
 
-    <v-main>
+    <v-main class="main">
       <router-view />
       <v-overlay
         :value="getOverlay"
@@ -41,3 +41,8 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.main {
+  background-color: $cadet-blue !important;
+}
+</style>
