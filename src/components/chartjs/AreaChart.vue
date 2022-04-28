@@ -3,6 +3,16 @@ import { Line } from "vue-chartjs";
 
 export default {
   extends: Line,
+  props: {
+    chartData: {
+      type: Object,
+      required: true,
+    },
+    chartOptions: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       gradient: null,
@@ -25,40 +35,12 @@ export default {
     this.gradient2.addColorStop(0.5, "rgba(0, 231, 255, 0.25)");
     this.gradient2.addColorStop(1, "rgba(0, 231, 255, 0)");
 
-    this.renderChart(
-      {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
-        datasets: [
-          {
-            label: "Data One",
-            borderColor: "#FC2525",
-            pointBackgroundColor: "white",
-            borderWidth: 1,
-            pointBorderColor: "white",
-            backgroundColor: this.gradient,
-            data: [40, 39, 10, 40, 39, 80, 40],
-          },
-          {
-            label: "Data Two",
-            borderColor: "#05CBE1",
-            pointBackgroundColor: "white",
-            pointBorderColor: "white",
-            borderWidth: 1,
-            backgroundColor: this.gradient2,
-            data: [60, 55, 32, 10, 2, 12, 53],
-          },
-        ],
-      },
-      { responsive: true, maintainAspectRatio: false }
-    );
+    this.renderChart(this.chartData, this.chartOptions);
+  },
+  methods: {
+    updateChart() {
+      this.$data._chart.update();
+    },
   },
 };
 </script>
