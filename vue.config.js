@@ -1,5 +1,6 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === "production" ? "/vue-dashboard/" : "/",
+  publicPath:
+    process.env.NODE_ENV === "production" ? "/vue-visualization/" : "/",
   transpileDependencies: ["vuetify"],
   css: {
     loaderOptions: {
