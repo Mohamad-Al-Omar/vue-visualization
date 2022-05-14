@@ -81,6 +81,22 @@
           />
         </v-card>
       </v-col>
+      <v-col cols="12" sm="6">
+        <v-card>
+          <v-card-title class="justify-center">Doughnut Chart 2</v-card-title>
+          <v-divider inset class="mx-auto"></v-divider>
+          <v-switch
+            v-model="updateDoughnutChartData2"
+            label="Update Chart Data"
+            class="ms-5"
+          ></v-switch>
+          <doughnut-chart
+            ref="doughnutChart2"
+            :chartData="doughnutData2"
+            :chartOptions="doughnutOptions"
+          />
+        </v-card>
+      </v-col>
       <v-col cols="12">
         <v-card>
           <v-card-title class="justify-center">Radar Chart</v-card-title>
@@ -131,6 +147,7 @@ export default {
       areaIndex: 0,
       pieIndex: 0,
       doughnutIndex: 0,
+      doughnutIndex2: 0,
       radarIndex: 0,
       updateLineChartData: false,
       lineInterval: null,
@@ -141,7 +158,9 @@ export default {
       updatePieChartData: false,
       pieInterval: null,
       updateDoughnutChartData: false,
+      updateDoughnutChartData2: false,
       doughnutInterval: null,
+      doughnutInterval2: null,
       updateRadarChartData: false,
       radarInterval: null,
       lineOptions: {
@@ -281,6 +300,18 @@ export default {
           },
         ],
       },
+      doughnutData2: {
+        hoverBackgroundColor: "red",
+        hoverBorderWidth: 10,
+        labels: ["Green", "Red", "Blue"],
+        datasets: [
+          {
+            label: "Data One",
+            backgroundColor: ["#41B883", "#E46651", "#00D8FF"],
+            data: [1, 10, 5],
+          },
+        ],
+      },
       radarOptions: {
         responsive: true,
         maintainAspectRatio: false,
@@ -326,6 +357,7 @@ export default {
     this.updateAreaChartData = true;
     this.updatePieChartData = true;
     this.updateDoughnutChartData = true;
+    this.updateDoughnutChartData2 = true;
     this.updateRadarChartData = true;
   },
   watch: {
@@ -382,6 +414,18 @@ export default {
         }, 4000);
       } else if (newVal === false) {
         clearInterval(this.doughnutInterval);
+      }
+    },
+    updateDoughnutChartData2(newVal) {
+      if (newVal === true) {
+        this.doughnutInterval2 = setInterval(() => {
+          this.generateDoughnutData2(this.doughnutIndex2);
+          this.doughnutIndex2++;
+          this.doughnutIndex2 =
+            this.doughnutIndex2 == 3 ? 0 : this.doughnutIndex2;
+        }, 4000);
+      } else if (newVal === false) {
+        clearInterval(this.doughnutInterval2);
       }
     },
     updateRadarChartData(newVal) {
@@ -467,6 +511,22 @@ export default {
         }
       }
       this.$refs.doughnutChart.updateChart();
+      console.log(`Doughnut Chart ${index} => updated`);
+    },
+    generateDoughnutData2(index) {
+      for (let i = 0; i < 4; i++) {
+        if (i == index) {
+          this.doughnutData2.datasets[0].data[i] = Math.floor(
+            Math.random() * 100
+          );
+        } else {
+          // eslint-disable-next-line no-self-assign
+          this.doughnutData2.datasets[0].data[i] =
+            // eslint-disable-next-line no-self-assign
+            this.doughnutData2.datasets[0].data[i];
+        }
+      }
+      this.$refs.doughnutChart2.updateChart();
       console.log(`Doughnut Chart ${index} => updated`);
     },
     generateRadarData(index) {
